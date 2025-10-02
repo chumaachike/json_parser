@@ -1,0 +1,25 @@
+# Binaries and build output
+/out/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Environment variables
+.env
+
+# Go workspace files
+/go.work
+/go.work.sum
+
+# Logs
+*.log
+
+# IDE/editor specific (optional but recommended)
+.vscode/
+.idea/
+*.swp
+*.swo
