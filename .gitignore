@@ -1,5 +1,4 @@
 # Binaries and build output
-out
 *.exe
 *.exe~
 *.dll
@@ -7,6 +6,11 @@ out
 *.dylib
 *.test
 *.out
+
+# Ignore compiled Go binaries
+/jsonparser
+/jsonparser.exe
+
 
 
 # Environment variables

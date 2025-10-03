@@ -1,11 +1,11 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"io"
-	"log"
 	"os"
+
+	"flag"
+	"io"
 
 	"github.com/chumaachike/json_parser/internal/lexer"
 	"github.com/chumaachike/json_parser/internal/parser"
@@ -24,17 +24,33 @@ func NewEngine(input string) *Engiine {
 	return &Engiine{lexer: l, parser: p}
 }
 func main() {
-	reader := bufio.NewReader(os.Stdin)
-	json_string, err := io.ReadAll(reader)
-	if err != nil {
-		log.Fatalf("unable to read err : %v", err)
-	}
-	engine := NewEngine(string(json_string))
-	json, err := engine.parser.Parse()
-	if err != nil {
-		log.Fatalf("unable to parse token err %v", err)
+
+	validate := flag.Bool("validate", false, "checks if json is valid")
+	flag.Parse()
+	var input []byte
+	var err error
+	if flag.NArg() > 0 {
+		input, err = os.ReadFile(flag.Arg(0))
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error reading file: %v\n", err)
+			os.Exit(1)
+		}
+	} else {
+		input, err = io.ReadAll(os.Stdin)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error reading stdin: %v\n", err)
+			os.Exit(1)
+		}
 	}
 
-	fmt.Printf("%T\n", json)
+	engine := NewEngine(string(input))
+
+	if *validate {
+		_, err := engine.parser.Parse()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "invalid json: %v\n", err)
+		}
+		fmt.Println("Json is valid")
+	}
 
 }
