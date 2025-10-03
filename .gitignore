@@ -1,5 +1,5 @@
 # Binaries and build output
-/out/
+out
 *.exe
 *.exe~
 *.dll
@@ -7,6 +7,7 @@
 *.dylib
 *.test
 *.out
+
 
 # Environment variables
 .env
