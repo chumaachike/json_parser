@@ -7,26 +7,29 @@ import (
 	"flag"
 	"io"
 
-	"github.com/chumaachike/json_parser/internal/lexer"
-	"github.com/chumaachike/json_parser/internal/parser"
+	"github.com/chumaachike/json_parser/internal/jsonx"
+	"github.com/chumaachike/json_parser/internal/query"
+	"github.com/pingcap/tidb/pkg/parser"
 )
 
-type Engiine struct {
-	lexer  *lexer.Lexer
-	parser *parser.Parser
+type Engine struct {
+	jsonx *jsonx.JsonX
+	query  *query.Query
 }
 
-func NewEngine(input string) *Engiine {
+func NewEngine(input string) *Engine {
 	l := lexer.New(input)
 	tokens := l.LexAll()
 
 	p := parser.New(tokens)
-	return &Engiine{lexer: l, parser: p}
+	return &Engine{lexer: l, parser: p}
 }
 func main() {
 
 	validate := flag.Bool("validate", false, "checks if json is valid")
+	query := flag.Bool("query", false, "queries the parsed json")
 	flag.Parse()
+
 	var input []byte
 	var err error
 	if flag.NArg() > 0 {
@@ -51,6 +54,8 @@ func main() {
 			fmt.Fprintf(os.Stderr, "invalid json: %v\n", err)
 		}
 		fmt.Println("Json is valid")
+	}else if *query {
+		engine.query.
 	}
 
 }
